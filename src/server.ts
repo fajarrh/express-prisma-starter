@@ -4,11 +4,11 @@ import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 import methodOverride from "method-override";
-import ErrorMiddleware from "@middleware/ErrorMiddleware";
 import corsOptions from "@config/cors";
 import logs from "@config/log";
 import { registerRoutes } from "frexp/lib/Decorator";
 import RequestMiddleware from "@middleware/RequestMiddleware";
+import errorHandler from "@middleware/errorHandler";
 
 const app = express();
 app.use(logs);
@@ -18,8 +18,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride());
 app.use("/public", express.static(__dirname + "/storage"));
 app.use(RequestMiddleware)
-registerRoutes(app, import("./router"));
-app.use(ErrorMiddleware);
+registerRoutes(app, import("./router"), errorHandler);
+
 
 app.listen(process.env.PORT, () => {
   const msg = `server has running in port :${process.env.PORT} on ${process.env.NODE_ENV} mode.`;
