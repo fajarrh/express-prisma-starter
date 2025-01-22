@@ -26,8 +26,8 @@ A robust starter kit for building RESTful APIs using **Express.js**, **Knex.js**
 - Clone the repository:
 
 ```bash
-   git clone https://github.com/your-username/express-knex-objection-starter.git
-   cd express-knex-objection-starter
+   git clone https://github.com/fajarrh/EPP-Starter.git
+   cd EPP-Starter
 ```
 
 # Environment Configuration for Development
