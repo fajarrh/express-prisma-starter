@@ -1,10 +1,14 @@
 import { RequestHandler } from "express";
 import Validation from "frexp/lib/Validation";
+import { v4 } from "uuid";
 
-const RequestMiddleware: RequestHandler = (req, _, next) => {
+const RequestMiddleware: RequestHandler = (req, res, next) => {
   const date = new Date();
-  if (req.header("tz")) {
-    date.setUTCHours(date.getUTCHours() + Number(req.header("tz")));
+  req.id = req.header("X-Request-ID") ?? v4();
+  res.setHeader("X-Request-ID", req.id);
+
+  if (req.header("TZ")) {
+    date.setUTCHours(date.getUTCHours() + Number(req.header("TZ")));
   }
 
   Object.assign(req, {

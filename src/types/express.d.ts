@@ -1,9 +1,9 @@
 declare namespace Express {
   interface Request {
+    id?: string;
     user?: {
       id?: number;
-      oid?: string;
-      username?: string;
+      uuid?: string;
     };
     now: () => Date;
     getQuery: (key: string, defaulValue?: any) => any;
