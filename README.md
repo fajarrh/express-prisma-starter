@@ -1,4 +1,4 @@
-# Express.js Starter Kit with Knex.js, Objection.js, and PostgreSQL
+# (Express - Prisma - Postgres) - Stater Kit
 
 A robust starter kit for building RESTful APIs using **Express.js**, **Knex.js** for query building, **Objection.js** as an ORM, and **PostgreSQL** for database management.
 
