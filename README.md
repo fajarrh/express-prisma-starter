@@ -5,8 +5,6 @@ A robust starter kit for building RESTful APIs using **Express.js**, **Knex.js**
 ## Features
 
 - 🌟 **Express.js**: Fast and minimalist web framework.
-- 🛠 **Knex.js**: SQL query builder with migration and seed support.
-- 🔗 **Objection.js**: Lightweight ORM built on top of Knex.js.
 - 🗃 **PostgreSQL**: High-performance relational database.
 - 📄 **Environment Variables**: Managed with `.env` using `dotenv`.
 - 🛡 **Error Handling**: Centralized error management.
