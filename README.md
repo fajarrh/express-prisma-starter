@@ -1,4 +1,4 @@
-# Express.js Starter Kit with Knex.js, Objection.js, and PostgreSQL
+# (Express - Prisma - Postgres) - Stater Kit
 
 A robust starter kit for building RESTful APIs using **Express.js**, **Knex.js** for query building, **Objection.js** as an ORM, and **PostgreSQL** for database management.
 
@@ -26,8 +26,8 @@ A robust starter kit for building RESTful APIs using **Express.js**, **Knex.js**
 - Clone the repository:
 
 ```bash
-   git clone https://github.com/your-username/express-knex-objection-starter.git
-   cd express-knex-objection-starter
+   git clone https://github.com/fajarrh/EPP-Starter.git
+   cd EPP-Starter
 ```
 
 # Environment Configuration for Development
@@ -200,34 +200,6 @@ npx frgen make:crud --schema=chat --orm=prisma
             }
         }
     }
-    ```
-
-- **Register Routes Dynamically**:
-
-    You can automatically register routes by reading controller files in a directory.
-
-    ```typescript
-    import fs from "fs";
-    import path from "path";
-    import express from "express";
-    import { createRouter } from "@lib/Decorators";  // Your decorators' file
-    
-    const app = express();
-    const controllersDir = path.resolve(__dirname, "controllers");
-
-    fs.readdirSync(controllersDir).forEach(file => {
-        if (file.endsWith("Controller.ts")) {
-            import(path.join(controllersDir, file)).then((module) => {
-                const controllerClass = module[file.replace(".ts", "")];
-                if (controllerClass) {
-                    const controllerInstance = new controllerClass();
-                    app.use(createRouter(controllerInstance));  // Register the controller's routes
-                }
-            }).catch(err => console.error(err));
-        }
-    });
-
-    app.listen(3000, () => console.log("Server running on http://localhost:3000"));
     ```
 
 ## Decorators
