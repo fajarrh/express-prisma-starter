@@ -39,7 +39,6 @@ This document provides instructions on how to configure the environment variable
 Create a `.env.development` file in the root directory of the project and populate it with the following variables:
 
 ```env
-NODE_ENV=development
 
 HOSTNAME=localhost
 PORT=8001
@@ -110,37 +109,37 @@ For further assistance, consult the project documentation or reach out to the de
 - make:resource "className" "tableName"
 
 ```bash
-NODE_ENV=development npx frgen make:resource UserResource users
+npx frgen make:resource UserResource users
 ```
 - shema --schema=schemaName
 ```bash
-NODE_ENV=development npx frgen make:resource UserResource users --schema=chat
+npx frgen make:resource UserResource users --schema=chat
 ```
 
 #### Controller
 - make:controller "className" "tableName"
 
 ```bash
-NODE_ENV=development npx frgen make:controller UserController users --orm=prisma
+npx frgen make:controller UserController users --orm=prisma
 ```
 - shema --schema=schemaName
 ```bash
-NODE_ENV=development npx frgen make:controller UserController users --schema=chat --orm=prisma
+npx frgen make:controller UserController users --schema=chat --orm=prisma
 ```
 - path --path=/directory/.../target
 ```bash
-NODE_ENV=development npx frgen make:controller UserController users --path=/directory/.../target --orm=prisma
+npx frgen make:controller UserController users --path=/directory/.../target --orm=prisma
 ```
 
 #### ALL
 - make:crud "className" "tableName"
 
 ```bash
-NODE_ENV=development npx frgen make:crud --orm=prisma
+npx frgen make:crud --orm=prisma
 ```
 - shema --schema=schemaName
 ```bash
-NODE_ENV=development npx frgen make:crud --schema=chat --orm=prisma
+npx frgen make:crud --schema=chat --orm=prisma
 ```
 
 - **Create a Controller**:
