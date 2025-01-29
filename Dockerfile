@@ -112,10 +112,8 @@ RUN apk add --no-cache --virtual .build-deps-yarn curl gnupg tar \
 RUN apk add --no-cache dbus chromium
 
 COPY package*.json .
-# RUN npm install knex -g
 RUN npm install --omit=dev
 COPY ./dist/ .
-# COPY knexfile.js .
 
 COPY docker-entrypoint.sh /usr/local/bin/
 RUN chmod 777 /usr/local/bin/docker-entrypoint.sh
