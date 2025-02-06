@@ -9,6 +9,10 @@ function getFilesRecursively(dir: string, basePath = ""): string[] {
   let exports: string[] = [];
 
   for (const file of files) {
+    if (file.name.startsWith("_")) {
+      continue; // Skip files or directories that start with '_'
+    }
+
     const relativePath = path.join(basePath, file.name);
     const fullPath = path.join(dir, file.name);
 

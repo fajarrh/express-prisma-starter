@@ -1,6 +1,6 @@
 # (Express - Prisma - Postgres) - Stater Kit
 
-A robust starter kit for building RESTful APIs using **Express.js**, **Knex.js** for query building, **Objection.js** as an ORM, and **PostgreSQL** for database management.
+A robust starter kit for building RESTful APIs using **Express.js**, **Prisma** as an ORM, **Yup** for as an validation and **PostgreSQL** for database management.
 
 ## Features
 
@@ -36,7 +36,7 @@ This document provides instructions on how to configure the environment variable
 
 ## Environment File Setup
 
-Create a `.env.development` file in the root directory of the project and populate it with the following variables:
+Create a `.env` file in the root directory of the project and populate it with the following variables:
 
 ```env
 
@@ -49,7 +49,7 @@ DB_PORT=5432
 DB_USER=postgres
 DB_PASSWORD=
 DB_NAME=db_report
-DB_SCHEMA=
+DB_SCHEMA=public
 
 JWT_SECRET=12345
 
@@ -98,10 +98,14 @@ CORS_ALLOW_HEADERS="Origin,Authorization,Content-Type,Accept"
 
 ### Notes
 
-- Ensure the `.env.development` file is included in `.gitignore` to prevent exposing sensitive information in version control.
+- Ensure the `.env` file is included in `.gitignore` to prevent exposing sensitive information in version control.
 - Customize the variables based on your development environment setup.
 
 For further assistance, consult the project documentation or reach out to the development team.
+
+### Prisma
+- first migrate prisma.schema first `npx prisma migrate dev`
+
 
 ### Generator
 
@@ -113,7 +117,7 @@ npx frgen make:resource UserResource users
 ```
 - shema --schema=schemaName
 ```bash
-npx frgen make:resource UserResource users --schema=chat
+npx frgen make:resource UserResource users --schema=other_schema
 ```
 
 #### Controller
@@ -124,11 +128,37 @@ npx frgen make:controller UserController users --orm=prisma
 ```
 - shema --schema=schemaName
 ```bash
-npx frgen make:controller UserController users --schema=chat --orm=prisma
+npx frgen make:controller UserController users --schema=other_schema --orm=prisma
 ```
 - path --path=/directory/.../target
 ```bash
 npx frgen make:controller UserController users --path=/directory/.../target --orm=prisma
+```
+
+#### Service
+- make:service "ServiceName" "tableName"
+
+```bash
+npx frgen make:service UserService users --orm=prisma
+```
+- shema --schema=schemaName
+```bash
+npx frgen make:service UserService users --schema=other_schema --orm=prisma
+```
+- path --path=/directory/.../target
+```bash
+npx frgen make:service UserService users --path=/directory/.../target --orm=prisma
+```
+
+#### Validation
+- make:validation "ValidationName" "tableName"
+
+```bash
+npx frgen make:validation UserValidation users
+```
+- shema --schema=schemaName
+```bash
+npx frgen make:validation UserValidation users --schema=other_schema
 ```
 
 #### ALL
@@ -139,7 +169,7 @@ npx frgen make:crud --orm=prisma
 ```
 - shema --schema=schemaName
 ```bash
-npx frgen make:crud --schema=chat --orm=prisma
+npx frgen make:crud --schema=other_schema --orm=prisma
 ```
 
 - **Create a Controller**:

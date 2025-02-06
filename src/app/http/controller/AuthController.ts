@@ -1,30 +1,28 @@
-import { Controller, Get, Middleware, Post } from "frexp/lib/Decorator";
+import { Controller, Post } from "frexp/lib/Decorator";
 import { NextFunction, Request, Response } from "express";
-import { login } from "@service/AuthService";
-import AuthMiddleware from "@middleware/AuthMiddleware";
-
-const arr = [100];
-
+import { handleRegister, login } from "@service/AuthService";
+import { loginSchema, registerSchema } from "@validation/AuthValidation";
 @Controller("")
 export class AuthController {
   @Post("/login")
   async login(req: Request, res: Response, next: NextFunction) {
     try {
-      const token = await login();
-      res.json({ data: token });
+      const validated = await req.validation(loginSchema);
+      const result = await login(validated);
+      res.json({ data: result });
     } catch (error) {
       next(error);
     }
   }
 
-  @Get("/test")
-  async testing(req: Request, res: Response, next: NextFunction) {
+  @Post("/register")
+  async register(req: Request, res: Response, next: NextFunction) {
     try {
-      const pop = arr.pop();
+      const validated = await req.validation(registerSchema);
+      await handleRegister(validated);
       res.json({
         data: {
-          id: req.id,
-          pop: pop,
+          message: "success",
         },
       });
     } catch (error) {
