@@ -8,7 +8,7 @@ import corsOptions from "@config/cors";
 import logs from "@config/log";
 import { registerRoutes } from "frexp/lib/Decorator";
 import RequestMiddleware from "@middleware/RequestMiddleware";
-import errorHandler from "@middleware/errorHandler";
+import ErrorHandler from "@middleware/ErrorHandler";
 import redis from "@config/redis";
 import * as router from "./router";
 import prisma from "@config/db";
@@ -21,7 +21,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride());
 app.use("/public", express.static(__dirname + "/storage"));
 app.use(RequestMiddleware);
-registerRoutes(app, router, errorHandler);
+registerRoutes(app, router, ErrorHandler);
 
 process.on("SIGINT", async () => {
   await prisma.$disconnect();
