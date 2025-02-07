@@ -17,7 +17,7 @@ export default class EmailHelper {
   //         secure: true,
   //         auth: {
   //           type: "OAuth2",
-  //           user: "hajatan.officials@gmail.com",
+  //           user: "emal.example.com"",
   //           accessToken: String(token),
   //         },
   //       });
@@ -45,7 +45,7 @@ export default class EmailHelper {
   //       }
   //       const compile = Handlebars.compile(html);
   //       const template = compile(data);
-  //       opt.from = "hajatan.officials@gmail.com";
+  //       opt.from = "example.email@gmail.com";
   //       opt.html = template;
   //       email
   //         .transporter()
@@ -66,7 +66,7 @@ export default class EmailHelper {
   //   }
   //   static sendMail(options: Mail.Options) {
   //     const email = new Email();
-  //     options.from = "hajatan.officials@gmail.com";
+  //     options.from = "example.email@gmail.com";
   //     email
   //       .transporter()
   //       .then((transporter) => {
