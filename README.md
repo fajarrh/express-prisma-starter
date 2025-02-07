@@ -124,30 +124,30 @@ npx frgen make:resource UserResource users --schema=other_schema
 - make:controller "className" "tableName"
 
 ```bash
-npx frgen make:controller UserController users --orm=prisma
+npx frgen make:controller UserController users --prisma
 ```
 - shema --schema=schemaName
 ```bash
-npx frgen make:controller UserController users --schema=other_schema --orm=prisma
+npx frgen make:controller UserController users --schema=other_schema --prisma
 ```
 - path --path=/directory/.../target
 ```bash
-npx frgen make:controller UserController users --path=/directory/.../target --orm=prisma
+npx frgen make:controller UserController users --path=/directory/.../target --prisma
 ```
 
 #### Service
 - make:service "ServiceName" "tableName"
 
 ```bash
-npx frgen make:service UserService users --orm=prisma
+npx frgen make:service UserService users --prisma
 ```
 - shema --schema=schemaName
 ```bash
-npx frgen make:service UserService users --schema=other_schema --orm=prisma
+npx frgen make:service UserService users --schema=other_schema --prisma
 ```
 - path --path=/directory/.../target
 ```bash
-npx frgen make:service UserService users --path=/directory/.../target --orm=prisma
+npx frgen make:service UserService users --path=/directory/.../target --prisma
 ```
 
 #### Validation
@@ -165,11 +165,11 @@ npx frgen make:validation UserValidation users --schema=other_schema
 - make:crud "className" "tableName"
 
 ```bash
-npx frgen make:crud --orm=prisma
+npx frgen make:crud --prisma
 ```
 - shema --schema=schemaName
 ```bash
-npx frgen make:crud --schema=other_schema --orm=prisma
+npx frgen make:crud --schema=other_schema --prisma
 ```
 
 - **Create a Controller**:
