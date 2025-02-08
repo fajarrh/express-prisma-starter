@@ -32,7 +32,7 @@
     "dotenv": "^16.4.5",
     "dotenv-cli": "^8.0.0",
     "express": "^4.19.2",
-    "frexp": "^0.1.8",
+    "frexp": "^0.1.9",
     "handlebars": "^4.7.8",
     "ioredis": "^5.4.2",
     "jsonwebtoken": "^9.0.2",
