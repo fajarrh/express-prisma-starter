@@ -26,7 +26,7 @@ A robust starter kit for building RESTful APIs using **Express.js**, **Prisma** 
 - Clone the repository:
 
 ```bash
-   git clone https://github.com/fajarrh/EPP-Starter.git
+   git clone https://github.com/fajarrh/express-pisma-starter.git
    cd EPP-Starter
 ```
 
