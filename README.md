@@ -26,8 +26,8 @@ A robust starter kit for building RESTful APIs using **Express.js**, **Prisma** 
 - Clone the repository:
 
 ```bash
-   git clone https://github.com/fajarrh/express-pisma-starter.git
-   cd express-pisma-starte
+   git clone https://github.com/fajarrh/express-prisma-starter.git
+   cd express-prisma-starter
 ```
 
 # Environment Configuration for Development
