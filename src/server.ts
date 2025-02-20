@@ -10,8 +10,8 @@ import { registerRoutes } from "frexp/lib/Decorator";
 import RequestMiddleware from "@middleware/RequestMiddleware";
 import ErrorHandler from "@middleware/ErrorHandler";
 import redis from "@config/redis";
-import * as router from "./router";
 import prisma from "@config/db";
+import * as router from "./router";
 
 const app = express();
 app.use(logs);
