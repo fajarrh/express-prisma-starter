@@ -56,9 +56,9 @@ declare namespace Express {
      * console.log(validator.validated, 'validated data')
      * ```
      */
-    validation: (
+    validation: <T = any>(
       schema: (yup: typeof import("yup")) => import("yup").AnyObjectSchema,
       opt?: import("yup").ValidateOptions
-    ) => Promise<any>;
+    ) => Promise<T>;
   }
 }
