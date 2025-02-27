@@ -56,9 +56,9 @@ declare namespace Express {
      * console.log(validator.validated, 'validated data')
      * ```
      */
-    validation: <T = any>(
-      schema: (yup: typeof import("yup")) => import("yup").AnyObjectSchema,
+    validation: <T extends yup.AnyObjectSchema>(
+      schema: (yup: typeof import("yup")) =>T,
       opt?: import("yup").ValidateOptions
-    ) => Promise<T>;
+    ) => Promise<import("yup").InferType<T>>;
   }
 }
