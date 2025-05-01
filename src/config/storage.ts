@@ -1,13 +1,15 @@
+import FileUtils from "@lib/FileUtils";
 import multer from "multer";
-import path from "path";
 
-const image = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, "../storage/images"));
-  },
-  filename: (req, file, cb) => {
-    cb(null, `${file.originalname}`);
-  },
+const file = multer({
+  storage: multer.diskStorage({
+    destination: (_, file, cb) => {
+      cb(null, FileUtils.multerDestination(file));
+    },
+    filename: (_, file, cb) => {
+      cb(null, FileUtils.multerFileName(file));
+    },
+  }),
 });
 
-export { image };
+export { file };
