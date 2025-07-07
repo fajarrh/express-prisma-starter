@@ -7,6 +7,9 @@
 # production
 **/dist
 
+# production
+**/generated
+
 # log directories
 **/logs
 
