@@ -19,7 +19,11 @@ function getFilesRecursively(dir: string, basePath = ""): string[] {
     if (file.isDirectory()) {
       exports = exports.concat(getFilesRecursively(fullPath, relativePath));
     } else if (file.isFile() && file.name.endsWith("Controller.ts")) {
-      const moduleName = file.name.replace(".ts", "");
+      const exportPath = `@controller/${relativePath
+        .replace(/\\/g, "/")
+        .replace(".ts", "")}`;
+      exports.push(`export * from "${exportPath}";`);
+    } else if (file.isFile() && file.name.endsWith(".controller.ts")) {
       const exportPath = `@controller/${relativePath
         .replace(/\\/g, "/")
         .replace(".ts", "")}`;

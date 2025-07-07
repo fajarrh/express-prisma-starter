@@ -1,4 +1,4 @@
-import FileUtils from "@lib/FileUtils";
+import FileUtils from "@lib/file.utils";
 import multer from "multer";
 
 const file = multer({

@@ -5,4 +5,6 @@ const redis = new Redis(
   process.env.REDIS_HOST || "127.0.0.1"
 );
 
-export default redis;
+const redisClient = redis.duplicate();
+
+export { redis, redisClient };

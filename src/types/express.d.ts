@@ -5,16 +5,15 @@ declare namespace Express {
     /**
      * Represents the authenticated user data attached to the request.
      */
-    user?: {
+    user: {
       /**
        * Optional numeric ID of the user.
        */
-      id?: number;
-
+      id: number;
       /**
        * Optional UUID of the user.
        */
-      uuid?: string;
+      uuid: string;
     };
 
     /**
@@ -31,7 +30,7 @@ declare namespace Express {
      * @param defaulValue - The default value to return if the key is not found.
      * @returns {any} The query parameter value or the default value if not found.
      */
-    getQuery: (key: string, defaulValue?: any) => any;
+    // getQuery: (key: string, defaulValue?: any) => any;
 
     /**
      * Validates request data against a Yup schema.
@@ -57,7 +56,7 @@ declare namespace Express {
      * ```
      */
     validation: <T extends yup.AnyObjectSchema>(
-      schema: (yup: typeof import("yup")) =>T,
+      schema: (yup: typeof import("yup")) => T,
       opt?: import("yup").ValidateOptions
     ) => Promise<import("yup").InferType<T>>;
   }

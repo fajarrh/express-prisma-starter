@@ -7,9 +7,9 @@ import methodOverride from "method-override";
 import corsOptions from "@config/cors";
 import logs from "@config/log";
 import { registerRoutes } from "frexp/lib/Decorator";
-import RequestMiddleware from "@middleware/RequestMiddleware";
-import ErrorHandler from "@middleware/ErrorHandler";
-import redis from "@config/redis";
+import RequestMiddleware from "@middleware/request.middleware";
+import ErrorHandler from "@middleware/error.handler";
+import {redis} from "@config/redis";
 import prisma from "@config/db";
 import * as router from "./router";
 
