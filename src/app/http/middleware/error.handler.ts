@@ -1,4 +1,3 @@
-import { ErrorRequestHandler } from "express-serve-static-core";
 import { MulterError } from "multer";
 import { ValidationError } from "yup";
 import AuthorizationException from "@exception/authorization.exception";
@@ -8,7 +7,7 @@ import { Prisma } from "@generated/prisma";
 import ForbiddenException from "@exception/forbidden.exception";
 import BadRequestException from "@exception/badRequest.exception";
 
-const ErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
+const ErrorHandler = (err, req, res, next) => {
   let message = "";
   if (res.headersSent) {
     return next(err);
