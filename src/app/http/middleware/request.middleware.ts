@@ -7,10 +7,6 @@ const RequestMiddleware: RequestHandler = (req, res, next) => {
   req.id = req.header("X-Request-ID") ?? v4();
   res.setHeader("X-Request-ID", req.id);
 
-  if (req.header("TimeZoneOffset")) {
-    date.setUTCHours(date.getUTCHours() + Number(req.header("TimeZoneOffset")));
-  }
-
   if (req.query.page !== undefined && req.query.perPage !== undefined) {
     req.query.skip = String(+req.query.page * +req.query.perPage);
     req.query.take = req.query.perPage;
@@ -22,7 +18,6 @@ const RequestMiddleware: RequestHandler = (req, res, next) => {
     },
     validation: Validation.body(req.body),
     now: () => date,
-    TimeZoneOffset: +(req.header("TimeZoneOffset") ?? 0),
   });
   next();
 };
