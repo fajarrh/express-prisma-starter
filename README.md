@@ -139,26 +139,26 @@ npx frgen make:controller UserController users --path=/directory/.../target --pr
 - make:service "ServiceName" "tableName"
 
 ```bash
-npx frgen make:service UserService users --prisma
+npx frgen make:service user.service users --prisma
 ```
 - shema --schema=schemaName
 ```bash
-npx frgen make:service UserService users --schema=other_schema --prisma
+npx frgen make:service user.service users --schema=other_schema --prisma
 ```
 - path --path=/directory/.../target
 ```bash
-npx frgen make:service UserService users --path=/directory/.../target --prisma
+npx frgen make:service user.service users --path=/directory/.../target --prisma
 ```
 
 #### Validation
 - make:validation "ValidationName" "tableName"
 
 ```bash
-npx frgen make:validation UserValidation users
+npx frgen make:validation user.validation users
 ```
 - shema --schema=schemaName
 ```bash
-npx frgen make:validation UserValidation users --schema=other_schema
+npx frgen make:validation user.validation users --schema=other_schema
 ```
 
 #### ALL
