@@ -6,7 +6,7 @@ import { LoginSchema, RegisterSchema } from "@validation/auth.validation";
 import { v4 } from "uuid";
 import jwt from "jsonwebtoken";
 
-export const login = async (payload: LoginSchema) => {
+export const handleLogin = async (payload: LoginSchema) => {
   const user = await prisma.user.findFirstOrThrow({
     select: { id: true, name: true, email: true, password: true },
     where: { email: payload.email },

@@ -3,13 +3,13 @@ import { NextFunction, Request, Response } from "express";
 import { Controller, Get, Post, Put, Delete } from "frexp/lib/Decorator";
 import { getPaginate, getDetail, handleCreate, handleUpdate, handleDelete} from "@service/user.service";
 import UserResource from "@resource/user.resource";
-import { userSchema } from "@validation/user.validation";
+import { createUserSchema,updateUserSchema } from "@validation/user.validation";
 
 @Controller("/user")
 export class UserController {
 
   @Get("/")
-  async index(req: Request, res: Response, next: NextFunction){
+  async getIndex(req: Request, res: Response, next: NextFunction){
     try {
       const results = await getPaginate(req.query);
       res.json(UserResource.paginate(results));
@@ -19,7 +19,7 @@ export class UserController {
   };
 
   @Get("/:id")
-  async view(req: Request, res: Response, next: NextFunction){
+  async getView(req: Request, res: Response, next: NextFunction){
     try {
       const model = await getDetail(+req.params.id)
       res.json(new UserResource(model, true));
@@ -29,10 +29,10 @@ export class UserController {
   };
 
   @Post("/")
-  async create(req: Request, res: Response, next: NextFunction){
+  async postCreate(req: Request, res: Response, next: NextFunction){
     try {
       
-  const validated = await req.validation(userSchema);
+  const validated = await req.validation(createUserSchema);
  
       const model = await handleCreate(validated);
       res.json(new UserResource(model, true));
@@ -42,12 +42,10 @@ export class UserController {
   };
 
   @Put("/")
-  async update(req: Request, res: Response, next: NextFunction){
+  async putUser(req: Request, res: Response, next: NextFunction){
     try {
       
-    const validated = await req.validation(userSchema, {
-      context: { method: req.method },
-    });
+    const validated = await req.validation(updateUserSchema);
    
       const model = await handleUpdate(validated);
       res.json(new UserResource(model, true));
@@ -57,7 +55,7 @@ export class UserController {
   };
 
   @Delete("/:id")
-  async destroy(req: Request, res: Response, next: NextFunction){
+  async deleteUser(req: Request, res: Response, next: NextFunction){
     try {
       await handleDelete(+req.params.id)
       res.sendStatus(204);

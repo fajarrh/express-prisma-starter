@@ -55,9 +55,10 @@ declare namespace Express {
      * console.log(validator.validated, 'validated data')
      * ```
      */
-    validation: <T extends yup.AnyObjectSchema>(
-      schema: (yup: typeof import("yup")) => T,
-      opt?: import("yup").ValidateOptions
-    ) => Promise<import("yup").InferType<T>>;
+
+    validation: <T extends import("zod").ZodObject>(
+      schema: (z: typeof import("zod")) => T,
+      params?: import("zod").util.InexactPartial<import("zod").ParseParams>
+    ) => Promise<import("zod").infer<T>>;
   }
 }

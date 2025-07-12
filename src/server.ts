@@ -1,6 +1,5 @@
-import dotenv from "dotenv";
-dotenv.config({ path: [`.env.${process.env.NODE_ENV}`, ".env"] });
 import express from "express";
+import "@lib/env.utils";
 import cors from "cors";
 import bodyParser from "body-parser";
 import methodOverride from "method-override";
@@ -15,7 +14,6 @@ import * as router from "./router";
 
 const app = express();
 app.use(logs);
-app.options("*", cors(corsOptions));
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));

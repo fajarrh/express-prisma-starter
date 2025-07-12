@@ -1,7 +1,9 @@
-import { Request } from "express";
 import prisma from "@config/db";
 import NotFoundException from "@exception/notFound.exception";
-import { UserSchema } from "@validation/user.validation";
+import {
+  CreateUserSchema,
+  UpdateUserSchema,
+} from "@validation/user.validation";
 
 export const getPaginate = async (qs: Record<string, any>) => {
   const count = await prisma.user.count();
@@ -20,11 +22,11 @@ export const getDetail = async (id: number) => {
   return model;
 };
 
-export const handleCreate = (payload: UserSchema) => {
+export const handleCreate = (payload: CreateUserSchema) => {
   return prisma.user.create({ data: payload });
 };
 
-export const handleUpdate = ({ id, ...payload }: UserSchema) => {
+export const handleUpdate = ({ id, ...payload }: UpdateUserSchema) => {
   return prisma.user.update({ where: { id: +id! }, data: payload });
 };
 

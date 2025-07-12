@@ -1,17 +1,18 @@
-import * as yup from "yup";
+import * as z from "zod";
 
-export const loginSchema = (y: typeof yup) =>
-  y.object().shape({
-    email: y.string().email().required(),
-    password: y.string().required(),
+export const loginSchema = (zod: typeof z) =>
+  zod.object({
+    email: zod.string().email().nonempty(),
+    password: zod.string().nonempty(),
   });
-export type LoginSchema = yup.InferType<ReturnType<typeof loginSchema>>;
 
-export const registerSchema = (y: typeof yup) =>
-  y.object().shape({
-    name: y.string().required(),
-    email: y.string().email().required(),
-    phoneNumber: y.string().min(10).max(16).required(),
-    password: y.string().required(),
+export type LoginSchema = z.infer<ReturnType<typeof loginSchema>>;
+
+export const registerSchema = (zod: typeof z) =>
+  zod.object({
+    name: zod.string().nonempty(),
+    email: zod.string().email().nonempty(),
+    phoneNumber: zod.string().min(10).max(16).nonempty(),
+    password: zod.string().nonempty(),
   });
-export type RegisterSchema = yup.InferType<ReturnType<typeof registerSchema>>;
+export type RegisterSchema = z.infer<ReturnType<typeof registerSchema>>;

@@ -1,11 +1,11 @@
 import { MulterError } from "multer";
-import { ValidationError } from "yup";
 import AuthorizationException from "@exception/authorization.exception";
 import UnprocessableException from "@exception/unprocessable.exception";
 import NotFoundException from "@exception/notFound.exception";
 import { Prisma } from "@generated/prisma";
 import ForbiddenException from "@exception/forbidden.exception";
 import BadRequestException from "@exception/badRequest.exception";
+import { ZodError } from "zod/v4";
 
 const ErrorHandler = (err, req, res, next) => {
   let message = "";
@@ -14,7 +14,7 @@ const ErrorHandler = (err, req, res, next) => {
   }
 
   if (err instanceof AuthorizationException) {
-    return res.status(err.respCode).json({ error: 'Unauthorized' });
+    return res.status(err.respCode).json({ error: "Unauthorized" });
   }
 
   if (err instanceof UnprocessableException) {
@@ -33,12 +33,12 @@ const ErrorHandler = (err, req, res, next) => {
     return res.status(err.respCode).json({ error: err?.message });
   }
 
-  if (err instanceof ValidationError || err?.name === 'ValidationError') {
+  if (err instanceof ZodError) {
     return res.status(422).json({
-      error: err.inner.map((v) => ({
-        label: v.params?.label,
-        path: v.path,
-        type: v.type,
+      error: err.issues.map(({ path, code, ...v }) => ({
+        path: path.at(0) ?? "",
+        type: code,
+        ...v,
       })),
     });
   }
@@ -121,7 +121,7 @@ const ErrorHandler = (err, req, res, next) => {
   }
 
   return res.status(500).json({
-    error: err?.message
+    error: err?.name,
   });
 };
 

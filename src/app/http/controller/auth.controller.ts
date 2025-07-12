@@ -1,14 +1,14 @@
 import { Controller, Post } from "frexp/lib/Decorator";
 import { NextFunction, Request, Response } from "express";
-import { handleRegister, login } from "@service/auth.service";
+import { handleLogin, handleRegister } from "@service/auth.service";
 import { loginSchema, registerSchema } from "@validation/auth.validation";
 @Controller("")
 export class AuthController {
   @Post("/login")
-  async login(req: Request, res: Response, next: NextFunction) {
+  async postLogin(req: Request, res: Response, next: NextFunction) {
     try {
       const validated = await req.validation(loginSchema);
-      const result = await login(validated);
+      const result = await handleLogin(validated);
       res.json({ data: result });
     } catch (error) {
       next(error);
@@ -16,7 +16,7 @@ export class AuthController {
   }
 
   @Post("/register")
-  async register(req: Request, res: Response, next: NextFunction) {
+  async postRegister(req: Request, res: Response, next: NextFunction) {
     try {
       const validated = await req.validation(registerSchema);
       await handleRegister(validated);
