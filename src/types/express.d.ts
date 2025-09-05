@@ -57,7 +57,7 @@ declare namespace Express {
      */
 
     validation: <T extends import("zod").ZodObject>(
-      schema: (z: typeof import("zod")) => T,
+      schema: T,
       params?: import("zod").util.InexactPartial<import("zod").ParseParams>
     ) => Promise<import("zod").infer<T>>;
   }
