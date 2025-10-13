@@ -107,267 +107,199 @@ For further assistance, consult the project documentation or reach out to the de
 - first migrate prisma.schema first `npx prisma migrate dev`
 
 
-### Generator
+# 🧰 FRGEN — CLI CRUD Generator
 
-#### Resource
-- make:resource "className" "tableName"
+`frgen` is a **Command Line Tool** that automatically generates boilerplate files such as **models**, **controllers**, **services**, **validations**, and **resources** based on your database table structure.
 
-```bash
-npx frgen make:resource UserResource users
-```
-- shema --schema=schemaName
-```bash
-npx frgen make:resource UserResource users --schema=other_schema
-```
+---
 
-#### Controller
-- make:controller "className" "tableName"
+## 📦 Installation
+
+If published on npm, you can run it directly using:
 
 ```bash
-npx frgen make:controller UserController users --prisma
-```
-- shema --schema=schemaName
-```bash
-npx frgen make:controller UserController users --schema=other_schema --prisma
-```
-- path --path=/directory/.../target
-```bash
-npx frgen make:controller UserController users --path=/directory/.../target --prisma
+npx frgen <action> [options...]
 ```
 
-#### Service
-- make:service "ServiceName" "tableName"
+Example:
+```bash
+npx frgen make:controller --table=users --path=modules/users
+```
+
+Or install it globally (optional):
 
 ```bash
-npx frgen make:service user.service users --prisma
-```
-- shema --schema=schemaName
-```bash
-npx frgen make:service user.service users --schema=other_schema --prisma
-```
-- path --path=/directory/.../target
-```bash
-npx frgen make:service user.service users --path=/directory/.../target --prisma
-```
-
-#### Validation
-- make:validation "ValidationName" "tableName"
-
-```bash
-npx frgen make:validation user.validation users
-```
-- shema --schema=schemaName
-```bash
-npx frgen make:validation user.validation users --schema=other_schema
-```
-
-#### ALL
-- make:crud "className" "tableName"
-
-```bash
-npx frgen make:crud --prisma
-```
-- shema --schema=schemaName
-```bash
-npx frgen make:crud --schema=other_schema --prisma
-```
-
-- **Create a Controller**:
-
-    Use the `@Controller` decorator to define the base path for your controller. Methods inside the controller can then be decorated with HTTP method decorators like `@Get`, `@Post`, etc.
-
-    ```typescript
-    import { Controller, Get } from "@lib/Decorators"; // Adjust based on your file structure
-    import { Request, Response, NextFunction } from "express";
-
-    @Controller("/users") // Define controller's base path
-    export class UserController {
-
-        @Get("/") // Define GET method for /users route
-        async getAllUsers(req: Request, res: Response, next: NextFunction) {
-            try {
-                res.json({ message: "All Users" });
-            } catch (error) {
-                next(error);
-            }
-        }
-
-        @Get("/:id") // Define GET method for /users/:id route
-        async getUserById(req: Request, res: Response, next: NextFunction) {
-            try {
-                const userId = req.params.id;
-                res.json({ message: `User ID: ${userId}` });
-            } catch (error) {
-                next(error);
-            }
-        }
-    }
-
-- **Middleware**:
-
-    You can apply middleware at both the controller and method levels. This is useful for tasks like authentication or logging.
-
-    ```typescript
-    import { Middleware, Controller, Get } from "@lib/Decorators";
-    import { Request, Response, NextFunction } from "express";
-
-    function loggerMiddleware(req: Request, res: Response, next: NextFunction) {
-        console.log(`Request made to: ${req.originalUrl}`);
-        next();
-    }
-
-    @Controller("/users")
-    @Middleware([loggerMiddleware]) // Apply middleware to all routes in the controller
-    export class UserController {
-
-        @Get("/")
-        @Middleware([loggerMiddleware]) // Apply middleware to this specific method
-        async getAllUsers(req: Request, res: Response, next: NextFunction) {
-            try {
-                res.json({ message: "All Users" });
-            } catch (error) {
-                next(error);
-            }
-        }
-    }
-    ```
-
-## Decorators
-
-### `@Controller(prefix: string)`
-
-Define the base route prefix for the controller.
-
-- **Parameters**: `prefix` - The base path for all routes in the controller.
-
-```typescript
-@Controller("/users")
-```
-
-### `@Get(path: string)`
-
-Map a method to the HTTP GET request for the given path.
-
-- **Parameters**: `path` - The route path for the GET request.
-
-```typescript
-@Get("/:id")
-```
-
-### `@Post(path: string)`
-
-Map a method to the HTTP POST request for the given path.
-
-- **Parameters**: `path` - The route path for the POST request.
-
-```typescript
-@Post("/")
-```
-
-### `@Put(path: string)`
-
-Map a method to the HTTP PUT request for the given path.
-
-- **Parameters**: `path` - The route path for the PUT request.
-
-```typescript
-@Put("/:id")
-```
-
-### `@Delete(path: string)`
-
-Map a method to the HTTP DELETE request for the given path.
-
-- **Parameters**: `path` - The route path for the DELETE request.
-
-```typescript
-@Delete("/:id")
-```
-
-### `@Patch(path: string)`
-
-Map a method to the HTTP PATCH request for the given path.
-
-- **Parameters**: `path` - The route path for the PATCH request.
-
-```typescript
-@Patch("/:id")
-```
-
-### `@Middleware(middleware: Array<Function>)`
-
-Apply middleware at the controller or method level.
-
-- **Parameters**: `middleware` - An array of middleware functions to apply.
-
-```typescript
-@Middleware([loggerMiddleware]) // Apply middleware to all methods in the controller
+npm install -g frgen
+frgen make:crud --pg
 ```
 
 ---
 
-## Example Usage
+## ⚙️ General Options
 
-### Controller Example
+| Option | Description | Example |
+|--------|--------------|----------|
+| `--table=<table_name>` | The table name used as the generation base | `--table=users` |
+| `--schema=<schema_name>` | (Optional) Database schema, default `public` | `--schema=my_schema` |
+| `--path=<output_folder>` | (Optional) Output file path | `--path=modules/user` |
+| `--prisma` | Use Prisma ORM | `--prisma` |
+| `--pg` | Use PostgreSQL client | `--pg` |
+| `--mysql` | Use MySQL client | `--mysql` |
 
-```typescript
-import { Controller, Get, Post } from "@lib/Decorators"; // Adjust based on your file structure
-import { Request, Response, NextFunction } from "express";
+---
 
-@Controller("/products")
-export class ProductController {
+## 🧩 Available Actions
 
-    @Get("/")
-    async getAllProducts(req: Request, res: Response, next: NextFunction) {
-        try {
-            res.json({ message: "All Products" });
-        } catch (error) {
-            next(error);
-        }
-    }
+### 1. `make:model`
+Generates a **model** file based on the database table structure.
 
-    @Post("/")
-    async createProduct(req: Request, res: Response, next: NextFunction) {
-        try {
-            res.json({ message: "Product Created" });
-        } catch (error) {
-            next(error);
-        }
-    }
-}
+```bash
+npx frgen make:model --table=users --schema=public
 ```
 
-### Middleware Example
+**Process:**
+- Reads the table structure from the database
+- Generates a PascalCase model name  
+- Saves it in the default path or the specified `--path`
 
-```typescript
-import { Middleware } from "@lib/Decorators";
-import { Request, Response, NextFunction } from "express";
+---
 
-function authMiddleware(req: Request, res: Response, next: NextFunction) {
-    if (!req.headers.authorization) {
-        return res.status(401).json({ message: "Unauthorized" });
-    }
-    next();
-}
+### 2. `make:resource`
+Generates a **resource** file (usually a DTO or response mapper).
 
-@Controller("/secure")
-@Middleware([authMiddleware]) // Apply middleware to all routes in the controller
-export class SecureController {
-    
-    @Get("/profile")
-    async getProfile(req: Request, res: Response, next: NextFunction) {
-        try {
-            res.json({ message: "Secure Profile" });
-        } catch (error) {
-            next(error);
-        }
-    }
-}
+```bash
+npx frgen make:resource --table=products
 ```
 
 ---
 
-## Conclusion
+### 3. `make:controller`
+Generates a complete set of files including:
+- Controller
+- Service
+- Validation
+- Resource
 
-This library allows you to write cleaner and more expressive code by leveraging TypeScript decorators for routing and middleware in Express.js. It simplifies route creation, middleware assignment, and controller organization, making your server code more modular and easier to maintain.
+```bash
+npx frgen make:controller --table=users --path=modules/users
+```
 
+**Steps performed:**
+1. `generateController()`
+2. `generateService()`
+3. `generateValidation()`
+4. `generateContent()`
+
+---
+
+### 4. `make:crud`
+Generates a full CRUD structure at once, including:
+- Model  
+- Controller  
+- Service  
+- Validation  
+- Resource  
+
+```bash
+npx frgen make:crud --pg --schema=public
+```
+
+**Use this to generate the full CRUD boilerplate automatically.**
+
+---
+
+### 5. `make:validation`
+Generates an automatic **validation** file based on table structure.
+
+```bash
+npx frgen make:validation --table=orders
+```
+
+---
+
+### 6. `make:service`
+Generates a **service layer** file for business logic.
+
+```bash
+npx frgen make:service --table=users --path=modules/users
+```
+
+---
+
+## 🧠 Internal Explanation
+
+### Key Variables
+
+| Variable | Description |
+|-----------|--------------|
+| `action` | Main command (`make:model`, `make:crud`, etc.) |
+| `tableName` | Target table name |
+| `_path` | Output path for generated files |
+| `schema` | Database schema (default: `public`) |
+| `client` | Database client (`pg` or `mysql`) |
+| `prisma` | Boolean, whether Prisma ORM is used |
+| `pool` | Active database connection |
+
+---
+
+### Execution Flow of `frgen`
+
+1. Parse CLI arguments  
+2. Set `DB_CLIENT` according to the option (`pg` or `mysql`)  
+3. Create a database connection using `db.createPool()`  
+4. Check database connectivity with `checkDatabaseConnection()`  
+5. Execute action based on the command:
+   - `make:model` → `generateModelContent()`
+   - `make:controller` → `generateController()`, `generateService()`, etc.
+   - `make:crud` → `generateAll()`  
+6. Close the database connection (`pool.end()` / `pool.releaseConnection()`)  
+
+---
+
+## 💡 Full Examples
+
+### PostgreSQL
+```bash
+npx frgen make:controller --table=users --schema=public --pg --path=modules/users
+```
+
+### MySQL
+```bash
+npx frgen make:crud --mysql --path=modules/user
+```
+
+### With Prisma
+```bash
+npx frgen make:service --table=products --path=modules/products --prisma
+```
+
+---
+
+## 🧱 Internal Dependencies
+
+| File | Description |
+|------|--------------|
+| `./db.js` | Database connection utility |
+| `./utils.js` | Utility functions: `checkDatabaseConnection`, `removePluralSuffix`, `toPascalCase` |
+| `./make:model.js` | Model generator |
+| `./make:controller.js` | Controller generator |
+| `./make:service.js` | Service generator |
+| `./make:validation.js` | Validation generator |
+| `./make:resource.js` | Resource generator |
+| `./make:crud.js` | Full CRUD generator |
+
+---
+
+## 🧨 Error Handling
+
+| Error Message | Cause |
+|----------------|--------|
+| `❌ action undefined.` | No command provided |
+| `❌ table undefined.` | Table name missing |
+| `❌ ERROR:` | Internal error (e.g. DB connection failure) |
+
+---
+
+## 🧾 License
+
+This script is **internal & open for customization**, and can be modified freely for project needs.
