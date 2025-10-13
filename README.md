@@ -129,8 +129,8 @@ npx frgen make:controller --table=users --path=modules/users
 Or install it globally (optional):
 
 ```bash
-npm install -g frgen
-frgen make:crud --pg
+npm install frgen --save-dev
+npx frgen make:crud --pg
 ```
 
 ---
