@@ -242,20 +242,6 @@ npx frgen make:service --table=users --path=modules/users
 
 ---
 
-### Execution Flow of `frgen`
-
-1. Parse CLI arguments  
-2. Set `DB_CLIENT` according to the option (`pg` or `mysql`)  
-3. Create a database connection using `db.createPool()`  
-4. Check database connectivity with `checkDatabaseConnection()`  
-5. Execute action based on the command:
-   - `make:model` → `generateModelContent()`
-   - `make:controller` → `generateController()`, `generateService()`, etc.
-   - `make:crud` → `generateAll()`  
-6. Close the database connection (`pool.end()` / `pool.releaseConnection()`)  
-
----
-
 ## 💡 Full Examples
 
 ### PostgreSQL
@@ -272,21 +258,6 @@ npx frgen make:crud --mysql --path=modules/user
 ```bash
 npx frgen make:service --table=products --path=modules/products --prisma
 ```
-
----
-
-## 🧱 Internal Dependencies
-
-| File | Description |
-|------|--------------|
-| `./db.js` | Database connection utility |
-| `./utils.js` | Utility functions: `checkDatabaseConnection`, `removePluralSuffix`, `toPascalCase` |
-| `./make:model.js` | Model generator |
-| `./make:controller.js` | Controller generator |
-| `./make:service.js` | Service generator |
-| `./make:validation.js` | Validation generator |
-| `./make:resource.js` | Resource generator |
-| `./make:crud.js` | Full CRUD generator |
 
 ---
 
