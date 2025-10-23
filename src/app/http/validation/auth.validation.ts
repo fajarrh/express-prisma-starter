@@ -1,18 +1,16 @@
-import * as z from "zod";
+import * as zod from "zod";
 
-export const loginSchema = (zod: typeof z) =>
-  zod.object({
-    email: zod.string().email().nonempty(),
-    password: zod.string().nonempty(),
-  });
+export const loginSchema = zod.object({
+  email: zod.string().email().nonempty(),
+  password: zod.string().nonempty(),
+});
 
-export type LoginSchema = z.infer<ReturnType<typeof loginSchema>>;
+export type LoginSchema = zod.infer<typeof loginSchema>;
 
-export const registerSchema = (zod: typeof z) =>
-  zod.object({
-    name: zod.string().nonempty(),
-    email: zod.string().email().nonempty(),
-    phoneNumber: zod.string().min(10).max(16).nonempty(),
-    password: zod.string().nonempty(),
-  });
-export type RegisterSchema = z.infer<ReturnType<typeof registerSchema>>;
+export const registerSchema = zod.object({
+  name: zod.string().nonempty(),
+  email: zod.string().email().nonempty(),
+  phoneNumber: zod.string().min(10).max(16).nonempty(),
+  password: zod.string().nonempty(),
+});
+export type RegisterSchema = zod.infer<typeof registerSchema>;
