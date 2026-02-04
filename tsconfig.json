@@ -4,8 +4,11 @@
     // same as the --compilerOptions flag and the TS_NODE_COMPILER_OPTIONS environment variable
     "compilerOptions": {
       "baseUrl": ".",
-      "target": "ESNext",
-      "module": "CommonJS"
+      "module": "ESNext",
+      "moduleResolution": "bundler",
+      "target": "ES2023",
+      "esModuleInterop": true,
+      "ignoreDeprecations": "6.0"
     }
   },
   "compilerOptions": {

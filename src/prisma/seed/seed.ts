@@ -1,9 +1,9 @@
-import { PrismaClient } from "@generated/prisma";
-import bcrypt from "bcryptjs";
+import { PrismaClient } from "@generated/prisma/client";
+import bcrypt from "bcryptjs/umd/types";
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient({} as any);
 
-const userSeed = async () => {
+const main = async () => {
   const hashedPassword = await bcrypt.hash("123456", 10);
 
   const users = [
@@ -21,9 +21,16 @@ const userSeed = async () => {
         where: { email: user.email },
         update: {},
         create: user,
-      })
-    )
+      }),
+    ),
   );
-}
+};
 
-export default userSeed;
+main()
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });

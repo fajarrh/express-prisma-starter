@@ -3,10 +3,7 @@
   "version": "0.0.1",
   "description": "express starter kits",
   "main": "server.js",
-  "prisma": {
-    "schema": "./src/prisma/",
-    "seed": "ts-node --transpile-only ./src/prisma/seed/index.ts"
-  },
+  "type": "module",
   "scripts": {
     "build": "tsc && tsc-alias",
     "copyfiles": "copyfiles -u 1 \"src/app/resources/**\" dist && copyfiles -u 1 \"src/storage/**\" dist",
@@ -29,7 +26,8 @@
   "author": "fajar rizky hidayat",
   "license": "ISC",
   "dependencies": {
-    "@prisma/client": "^6.19.0",
+    "@prisma/adapter-pg": "^7.3.0",
+    "@prisma/client": "^7.3.0",
     "bcryptjs": "^3.0.3",
     "body-parser": "^2.2.0",
     "cors": "^2.8.5",
@@ -42,7 +40,7 @@
     "method-override": "^3.0.0",
     "morgan": "^1.10.1",
     "multer": "^2.0.2",
-    "pg": "^8.16.3",
+    "pg": "^8.18.0",
     "reflect-metadata": "^0.2.2",
     "uuid": "^13.0.0",
     "zod": "^4.1.12"
@@ -55,18 +53,19 @@
     "@types/method-override": "^3.0.0",
     "@types/morgan": "^1.9.10",
     "@types/multer": "^2.0.0",
-    "@types/node": "^24.10.1",
-    "@types/pg": "^8.15.6",
+    "@types/node": "^25.2.0",
+    "@types/pg": "^8.16.0",
     "concurrently": "^9.2.1",
     "copyfiles": "^2.4.1",
     "frgen": "^0.4.1",
     "nodemon": "^3.1.11",
     "npm-check-updates": "^19.1.2",
-    "prisma": "^6.19.0",
+    "prisma": "^7.3.0",
     "rimraf": "^6.1.0",
     "ts-node": "^10.9.2",
     "tsc-alias": "^1.8.16",
     "tsconfig-paths": "^4.2.0",
+    "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   }
 }
