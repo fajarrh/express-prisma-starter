@@ -1,6 +1,8 @@
-import RedisUtils from "@lib/redis.utils";
-import { RequestHandler } from "express";
+import RedisUtils from "@utils/redis.utils";
 import jwt from "jsonwebtoken";
+import { redisSession } from "@config/redis";
+import { RequestHandler } from "express";
+import { ENV } from "@config/env";
 
 const AuthMiddleware: RequestHandler = async (req, res, next) => {
   try {
@@ -12,13 +14,13 @@ const AuthMiddleware: RequestHandler = async (req, res, next) => {
 
     const [, token] = authorization.split(" ");
     const decoded: any = await new Promise((resolve, reject) => {
-      jwt.verify(token, process.env.JWT_SECRET as string, (err, decoded) => {
+      jwt.verify(token, ENV.APP.JWT_SECRET, (err, decoded) => {
         if (err) return reject(err);
         resolve(decoded);
       });
     });
 
-    const session = await RedisUtils.getSession(0, decoded.id);
+    const session = await RedisUtils.init(redisSession).getSession(String(decoded.id));
     if (!session || session.uuid !== decoded.uuid) {
       throw new Error("Unauthorization");
     }

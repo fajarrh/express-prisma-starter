@@ -1,4 +1,4 @@
-export default class ModelUtils<T = any, V = any> {
+export default class ModelSnapshot<T = any, V = any> {
   private _model: T;
   private _value: Record<keyof V, any>;
   constructor(model: T) {

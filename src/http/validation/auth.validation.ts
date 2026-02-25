@@ -1,7 +1,7 @@
 import * as zod from "zod";
 
 export const loginSchema = zod.object({
-  email: zod.string().email().nonempty(),
+  email: zod.email().nonempty(),
   password: zod.string().nonempty(),
 });
 
@@ -13,4 +13,5 @@ export const registerSchema = zod.object({
   phoneNumber: zod.string().min(10).max(16).nonempty(),
   password: zod.string().nonempty(),
 });
+
 export type RegisterSchema = zod.infer<typeof registerSchema>;

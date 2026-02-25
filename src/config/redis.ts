@@ -1,10 +1,12 @@
+import { REDIS_DB } from "@constant/redis.constant";
 import Redis from "ioredis";
+import { ENV } from "./env";
 
-const redis = new Redis(
-  Number(process.env.REDIS_PORT || 6379),
-  process.env.REDIS_HOST || "127.0.0.1"
-);
+const redisConfig = {
+  host: ENV.REDIS.HOST,
+  port: Number(ENV.REDIS.PORT),
+  password: ENV.REDIS.PASSWORD,
+};
 
-const redisClient = redis.duplicate();
-
-export { redis, redisClient };
+export const redisSession = new Redis({ ...redisConfig, db: REDIS_DB.SESSION });
+export const redisQueue = new Redis({ ...redisConfig, db: REDIS_DB.QUEUE });

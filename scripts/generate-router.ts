@@ -1,7 +1,8 @@
 import fs from "fs";
 import path from "path";
 
-const controllersDir = path.resolve(process.cwd(), "src/app/http/controller");
+
+const controllersDir = path.resolve(process.cwd(), "src/http/controller");
 const outputFile = path.resolve(process.cwd(), "src/router.ts");
 
 function getFilesRecursively(dir: string, basePath = ""): string[] {

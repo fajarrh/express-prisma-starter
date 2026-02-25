@@ -1,0 +1,18 @@
+{
+  "plugins": ["simple-import-sort", "import"],
+  "rules": {
+    "simple-import-sort/imports": [
+      "error",
+      {
+        "groups": [
+          ["^@?\\w"],
+          ["^@config", "^@middleware", "^@utils", "^@services", "^@controllers"],
+          ["^\\u0000"],
+          ["^\\.\\.(?!/?$)", "^\\.\\./?$"],
+          ["^\\./(?!(?!-router)$)[^/]*$", "^\\./router"]
+        ]
+      }
+    ],
+    "simple-import-sort/exports": "error"
+  }
+}

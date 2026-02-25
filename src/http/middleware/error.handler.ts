@@ -1,11 +1,11 @@
-import { MulterError } from "multer";
 import AuthorizationException from "@exception/authorization.exception";
 import UnprocessableException from "@exception/unprocessable.exception";
-import NotFoundException from "@exception/notFound.exception";
-import { Prisma } from "@generated/prisma";
+import NotFoundException from "@exception/notfound.exception";
 import ForbiddenException from "@exception/forbidden.exception";
-import BadRequestException from "@exception/badRequest.exception";
+import BadRequestException from "@exception/badrequest.exception";
 import { ZodError } from "zod/v4";
+import {Prisma} from "@generated/prisma/client";
+import { MulterError } from "multer";
 
 const ErrorHandler = (err, req, res, next) => {
   let message = "";

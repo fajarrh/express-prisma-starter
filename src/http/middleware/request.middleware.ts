@@ -1,5 +1,5 @@
+import Validation from "@utils/validation.utils";
 import { RequestHandler } from "express";
-import Validation from "frexp/lib/Validation";
 import { v4 } from "uuid";
 
 const RequestMiddleware: RequestHandler = (req, res, next) => {

@@ -2,8 +2,9 @@ import "dotenv/config";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "@generated/prisma/client";
 import { TransactionIsolationLevel } from "@generated/prisma/internal/prismaNamespace";
+import { ENV } from "./env";
 
-const connectionString = `${process.env.DATABASE_URL}`;
+const connectionString = ENV.DB.URL;
 
 const adapter = new PrismaPg({ connectionString });
 const prisma = new PrismaClient({

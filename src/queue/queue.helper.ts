@@ -1,4 +1,3 @@
-import { redis } from "@config/redis";
 
 interface Job {
   id: string;
@@ -15,28 +14,30 @@ interface ProcessOptions {
 
 export default class Queue {
   private queueName: string;
-  private db: number;
   private retryCount: number;
   private delay: number;
   private isRunning: boolean;
   private channel: string;
+  private redis: any;
 
-  constructor(queueName: string, db: number = 0) {
+  constructor(queueName: string) {
     this.queueName = queueName;
     this.channel = `channel:${queueName}`;
-    this.db = db;
     this.retryCount = 3;
     this.delay = 0;
     this.isRunning = false;
+  }
+
+  async attachRedisClient(client: any) {
+    this.redis = client;
   }
 
   async add(job: Job, priority: number = 0): Promise<void> {
     try {
       const jobData = { ...job, retries: job.retries ?? 0, priority };
       const serialized = JSON.stringify(jobData);
-      await redis.select(this.db);
-      await redis.zadd(this.queueName, priority, serialized);
-      await redis.publish(this.channel, "new_job");
+      await this.redis.zadd(this.queueName, priority, serialized);
+      await this.redis.publish(this.channel, "new_job");
       console.log(`🟢 Added job: ${job.id}`);
     } catch (err) {
       console.error("❌ Failed to add job:", err);
@@ -56,7 +57,7 @@ export default class Queue {
     this.delay = options.delay ?? 0;
     this.isRunning = true;
 
-    const subscriber = redis.duplicate({ lazyConnect: true });
+    const subscriber = this.redis.duplicate({ lazyConnect: true });
     await subscriber.connect();
     await subscriber.subscribe(this.channel);
 
@@ -69,7 +70,7 @@ export default class Queue {
         if (!job) break;
 
         const lockKey = `lock:${this.queueName}:${job.id}`;
-        const locked = await redis.set(lockKey, "1", "PX", 30000, "NX");
+        const locked = await this.redis.set(lockKey, "1", "PX", 30000, "NX");
 
         if (!locked) {
           console.log(`⏳ Job ${job.id} is already being processed.`);
@@ -91,7 +92,7 @@ export default class Queue {
           if (this.delay > 0) {
             await new Promise((res) => setTimeout(res, this.delay));
           }
-          await redis.del(lockKey);
+          await this.redis.del(lockKey);
         }
       }
     });
@@ -101,11 +102,10 @@ export default class Queue {
 
   async popJob(): Promise<Job | null> {
     try {
-      await redis.select(this.db);
-      const job = await redis.zrange(this.queueName, 0, 0);
+      const job = await this.redis.zrange(this.queueName, 0, 0);
       if (job.length === 0) return null;
 
-      const removed = await redis.zrem(this.queueName, job[0]);
+      const removed = await this.redis.zrem(this.queueName, job[0]);
       if (removed) {
         return JSON.parse(job[0]) as Job;
       }
@@ -119,7 +119,7 @@ export default class Queue {
 
   public async stop(): Promise<void> {
     this.isRunning = false;
-    await redis.quit();
+    await this.redis.quit();
     console.log("🛑 Queue stopped.");
   }
 }
