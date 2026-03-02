@@ -11,7 +11,19 @@ function getFilesRecursively(dir: string, basePath = ""): string[] {
 
   for (const file of files) {
     if (file.name.startsWith("_")) {
-      continue; // Skip files or directories that start with '_'
+      /**
+       * Skip files or directories that start with '_'.
+       *
+       * Konvensi ini digunakan untuk menandai controller sebagai "private" atau
+       * "tidak di-generate otomatis". File/folder dengan prefix '_' tidak akan
+       * dimasukkan ke dalam router.ts hasil generate.
+       *
+       * Gunakan prefix '_' jika kamu ingin mendaftarkan controller secara manual
+       * menggunakan `createRouter` dari `frexp/lib/Decorator` langsung di server.ts.
+       *
+       * Contoh: '_internal.controller.ts' → tidak ter-generate, harus didaftarkan manual.
+       */
+      continue;
     }
 
     const relativePath = path.join(basePath, file.name);
