@@ -18,21 +18,13 @@ export const ENV = {
     URL: process.env.APP_URL ?? "http://localhost:3000",
     JWT_SECRET: process.env.JWT_SECRET ?? "your_jwt_secret",
   },
-  DB: {
-    HOST: process.env.DB_HOST ?? "localhost",
-    PORT: Number(process.env.DB_PORT) ?? 5432,
-    USER: process.env.DB_USER ?? "postgres",
-    PASS: process.env.DB_PASSWORD ?? "password",
-    NAME: process.env.DB_NAME ?? "postgres",
-    SCHEMA: process.env.DB_SCHEMA ?? "public",
-    get URL() {
-      return `postgresql://${this.USER}:${this.PASS}@${this.HOST}:${this.PORT}/${this.NAME}?schema=${this.SCHEMA}`;
-    },
-  },
   REDIS: {
     HOST: process.env.REDIS_HOST ?? "localhost",
     PORT: Number(process.env.REDIS_PORT) ?? 6379,
-    PASSWORD: process.env.REDIS_PASSWORD ?? ""  ,
+    PASSWORD: process.env.REDIS_PASSWORD ?? "",
+  },
+  DB: {
+    DATABASE_URL: process.env.DATABASE_URL,
   },
   CORS: {
     ORIGIN: process.env.CORS_ORIGIN,
