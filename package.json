@@ -12,7 +12,7 @@
     "dev": "concurrently -n \"server,gen-route\" -p \"[{name}]\" -c \"white,blue\" \"npm run watch:dev\" \"npm run generate:controllers\"",
     "dev:only": "tsx watch --experimental-specifier-resolution=node src/server.ts",
     "watch:dev": "tsx watch --experimental-specifier-resolution=node src/server.ts",
-    "generate:controllers": "tsx watch --experimental-specifier-resolution=node scripts/generate-router.ts",
+    "generate:controllers": "tsx --experimental-specifier-resolution=node scripts/watch-controller.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint . --fix",
     "format": "prettier --write .",
