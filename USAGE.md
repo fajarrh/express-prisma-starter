@@ -137,7 +137,7 @@ app.use(ErrorHandler);
 
 ## 🧰 FRGEN — CLI CRUD Generator
 
-`frgen` is a CLI tool that automatically generates boilerplate files — **controller**, **service**, **validation**, **resource**, and **model** — based on your database table structure.
+`frgen` is a CLI tool that automatically generates boilerplate files — **controller**, **service**, **repository**, **validation**, **resource**, and **model** — based on your database table structure.
 
 ---
 
@@ -148,15 +148,17 @@ This project uses **PostgreSQL** and **Prisma**, so these flags are **required**
 | Flag | Reason |
 |------|--------|
 | `--pg` | Use PostgreSQL as the database client |
-| `--prisma` | Generate Prisma-compatible ORM code |
+| `--prisma` | Generate Prisma-compatible code (repository pattern) |
 | `--path=src/http` | Output to the correct folder structure |
 
 **Recommended: use the npm scripts** — they already include the correct flags:
 
 ```bash
-npm run gen:crud          # full CRUD (model + controller + service + validation + resource)
-npm run gen:controller    # controller + service + validation + resource
+npm run gen:crud          # full CRUD (model + controller + service + repository + validation + resource)
+npm run gen:controller    # controller + service + repository + validation + resource
+npm run gen:module        # module folder (controller + service + repository + validation) co-located
 npm run gen:service       # service file only
+npm run gen:repository    # repository file only (Prisma)
 npm run gen:validation    # validation file only
 npm run gen:resource      # resource file only
 ```
@@ -166,10 +168,26 @@ If you run `npx frgen` directly, always append the required flags:
 ```bash
 npx frgen make:crud --pg --prisma --path=src/http
 npx frgen make:controller --table=users --pg --prisma --path=src/http
+npx frgen make:module --table=users --pg --prisma --path=src/http/module/user
 npx frgen make:service --table=users --pg --prisma --path=src/http/service
-npx frgen make:validation --table=users --pg --prisma --path=src/http/validation
-npx frgen make:resource --table=users --pg --prisma --path=src/http/resource
+npx frgen make:repository --table=users --pg --prisma --path=src/http/repository
+npx frgen make:validation --table=users --pg --path=src/http/validation
+npx frgen make:resource --table=users --pg --path=src/http/resource
 ```
+
+---
+
+### Architecture (Prisma mode)
+
+When using `--prisma`, frgen follows a **repository pattern**:
+
+```
+controller  →  service  →  repository  →  prisma
+```
+
+- **Repository** — only layer that touches Prisma directly
+- **Service** — delegates all DB operations to the repository
+- **Controller** — calls service functions, handles HTTP request/response
 
 ---
 
@@ -180,7 +198,7 @@ npx frgen make:resource --table=users --pg --prisma --path=src/http/resource
 | `--table=<name>` | Target table name | `--table=users` |
 | `--schema=<name>` | Database schema (default: `public`) | `--schema=my_schema` |
 | `--path=<folder>` | Output folder | `--path=src/http` |
-| `--prisma` | Use Prisma ORM | `--prisma` |
+| `--prisma` | Use Prisma ORM (repository pattern) | `--prisma` |
 | `--pg` | Use PostgreSQL client | `--pg` |
 | `--mysql` | Use MySQL client | `--mysql` |
 
@@ -188,14 +206,18 @@ npx frgen make:resource --table=users --pg --prisma --path=src/http/resource
 
 ### Available Actions
 
-| Action | Generates |
-|--------|-----------|
-| `make:crud` | Model + Controller + Service + Validation + Resource |
-| `make:controller` | Controller + Service + Validation + Resource |
-| `make:model` | Model file |
-| `make:service` | Service file |
-| `make:validation` | Validation file |
-| `make:resource` | Resource / DTO file |
+| Action | Generates | Default output |
+|--------|-----------|----------------|
+| `make:crud` | Model + Controller + Service + Repository + Validation + Resource | `src/app/http/` |
+| `make:controller` | Controller + Service + Repository (if `--prisma`) + Validation + Resource | `src/app/http/controller/` |
+| `make:module` | Controller + Service + Repository (if `--prisma`) + Validation — co-located | `src/http/module/<table-name>/` |
+| `make:model` | Model file (Objection.js) | `src/app/model/` |
+| `make:service` | Service file | `src/app/http/service/` |
+| `make:repository` | Repository file (Prisma only) | `src/http/repository/` |
+| `make:validation` | Validation file (Zod) | `src/app/http/validation/` |
+| `make:resource` | Resource / DTO file | `src/app/http/resource/` |
+
+> **`make:module`** generates all files inside a single folder instead of splitting them across separate directories. Imports between files use relative paths (`./`) instead of path aliases.
 
 ---
 
@@ -206,9 +228,17 @@ npx frgen make:resource --table=users --pg --prisma --path=src/http/resource
 npm run gen:crud
 npm run gen:controller
 
-# Or run directly with required flags
+# Generate a self-contained module folder
+npx frgen make:module --table=users --pg --prisma
+# → src/http/module/user/user.controller.ts
+# → src/http/module/user/user.service.ts
+# → src/http/module/user/user.repository.ts
+# → src/http/module/user/user.validation.ts
+
+# Or run individual generators directly
 npx frgen make:crud --pg --prisma --path=src/http
 npx frgen make:controller --table=users --pg --prisma --path=src/http
+npx frgen make:repository --table=products --pg --prisma --path=src/http/repository
 npx frgen make:service --table=products --pg --prisma --path=src/http/service
 ```
 

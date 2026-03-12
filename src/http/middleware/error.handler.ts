@@ -4,37 +4,40 @@ import NotFoundException from "@exception/notfound.exception";
 import ForbiddenException from "@exception/forbidden.exception";
 import BadRequestException from "@exception/badrequest.exception";
 import { ZodError } from "zod/v4";
-import {Prisma} from "@generated/prisma/client";
+import { Prisma } from "@generated/prisma/client";
 import { MulterError } from "multer";
+import { ErrorCode } from "@constant/error-code.constant";
 
-const ErrorHandler = (err, req, res, next) => {
+const ErrorHandler = (err, _, res, next) => {
   let message = "";
   if (res.headersSent) {
     return next(err);
   }
 
   if (err instanceof AuthorizationException) {
-    return res.status(err.respCode).json({ error: "Unauthorized" });
+    return res.status(err.status).json({ code: err.respCode, message: "Unauthorized" });
   }
 
   if (err instanceof UnprocessableException) {
-    return res.status(err.respCode).json({ error: JSON.parse(err?.message) });
+    return res.status(err.status).json({ code: err.respCode, message: JSON.parse(err?.message) });
   }
 
   if (err instanceof BadRequestException) {
-    return res.status(err.respCode).json({ error: JSON.parse(err?.message) });
+    return res.status(err.status).json({ code: err.respCode, message: JSON.parse(err?.message) });
   }
 
   if (err instanceof ForbiddenException) {
-    return res.status(err.respCode).json({ error: JSON.parse(err?.message) });
+    return res.status(err.status).json({ code: err.respCode, message: JSON.parse(err?.message) });
   }
 
   if (err instanceof NotFoundException) {
-    return res.status(err.respCode).json({ error: err?.message });
+    return res.status(err.status).json({ code: err.respCode, message: err?.message });
   }
 
   if (err instanceof ZodError) {
     return res.status(422).json({
+      code: ErrorCode.VALIDATION_ERROR,
+      message: err.message,
       error: err.issues.map(({ path, code, ...v }) => ({
         path: path.at(0) ?? "",
         type: code,
@@ -44,7 +47,7 @@ const ErrorHandler = (err, req, res, next) => {
   }
 
   if (err instanceof MulterError) {
-    return res.status(422).json({ error: err.message });
+    return res.status(422).json({ code: ErrorCode.UNPROCESSABLE, message: err.message });
   }
 
   if (err instanceof Prisma.PrismaClientKnownRequestError) {
@@ -117,11 +120,12 @@ const ErrorHandler = (err, req, res, next) => {
         break;
     }
 
-    return res.status(400).json({ code: err.code, error: message });
+    return res.status(400).json({ code: err.code, message: message });
   }
 
   return res.status(500).json({
-    error: err?.name,
+    code: ErrorCode.INTERNAL_SERVER_ERROR,
+    message: err?.name,
   });
 };
 

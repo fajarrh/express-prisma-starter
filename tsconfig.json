@@ -27,7 +27,8 @@
       "@generated/*": ["./src/generated/*"],
       "@queue/*": ["./src/queue/*"],
       "@utils/*": ["./src/utils/*"],
-      "@constant/*": ["./src/constant/*"]
+      "@constant/*": ["./src/constant/*"],
+      "@repository/*": ["./src/repository/*"]
     },
 
     /* Interop & Keamanan */
