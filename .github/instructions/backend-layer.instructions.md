@@ -76,3 +76,12 @@ Apply `AuthMiddleware` to endpoints requiring authentication. `req.user` will be
 `RequestMiddleware` auto-converts `?page=0&perPage=10` to `req.query.skip` and `req.query.take`.
 
 **Read this file to understand the pattern:** `src/http/middleware/request.middleware.ts`
+
+## Variable Naming Convention
+
+Rules:
+- **Regular variables**: Use camelCase for variable names: `userId`, `userName`, `isLoading`, `hasPermission`
+- **Constants**: Use CAPITAL separator snake_case in the format `{CAPITAL}_{CAPITAL}` for constants: `USER_PROFILE`, `AUTH_TOKEN`, `DATA_TABLE`, `API_BASE_URL`, `MAX_RETRY_COUNT`
+- **Boolean variables**: Prefix with `is`, `has`, `can`, `should` using camelCase: `isLoading`, `hasPermission`, `canEdit`
+- **Consistency**: Maintain the same naming pattern throughout the codebase
+- **Descriptive naming**: Variable names should clearly indicate their purpose and data type
