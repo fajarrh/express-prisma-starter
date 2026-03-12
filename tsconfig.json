@@ -28,7 +28,7 @@
       "@queue/*": ["./src/queue/*"],
       "@utils/*": ["./src/utils/*"],
       "@constant/*": ["./src/constant/*"],
-      "@repository/*": ["./src/repository/*"]
+      "@repository/*": ["./src/http/repository/*"]
     },
 
     /* Interop & Keamanan */

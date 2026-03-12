@@ -1,0 +1,11 @@
+{
+  "servers": {
+    "prisma": {
+      "command": "npx",
+      "args": ["-y", "@prisma/mcp-server", "--prisma-config-path", "prisma.config.ts"],
+      "env": {
+        "DATABASE_URL": "${env:DATABASE_URL}"
+      }
+    }
+  }
+}

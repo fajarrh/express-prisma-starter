@@ -20,7 +20,9 @@
     "gen:resource": "npx frgen make:resource --pg --prisma --path=src/http/resource",
     "gen:controller": "npx frgen make:controller --pg --prisma --path=src/http/controller",
     "gen:validation": "npx frgen make:validation --pg --prisma --path=src/http/validation",
-    "gen:service": "npx frgen make:service --pg --prisma --path=src/http/service "
+    "gen:service": "npx frgen make:service --pg --prisma --path=src/http/service",
+    "gen:repository": "npx frgen make:repository --pg --prisma --path=src/http/repository",
+    "gen:module": "npx frgen make:module --pg --prisma --path=src/http/module"
   },
   "keywords": [
     "api",
