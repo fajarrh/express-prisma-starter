@@ -1,4 +1,3 @@
-import prisma from "@config/db";
 import AuthorizationException from "@exception/authorization.exception";
 import RedisUtils from "@utils/redis.utils";
 import jwt from "jsonwebtoken";
@@ -7,14 +6,10 @@ import { v4 } from "uuid";
 import { redisSession } from "@config/redis";
 import { hashPassword, verifyPassword } from "@utils/password.utils";
 import { ENV } from "@config/env";
+import { createUserAuth, getUserAuth } from "../repository/auth.repository";
 
 export const handleLogin = async (payload: LoginSchema) => {
-  const user = await prisma.user.findFirst({
-    select: { id: true, name: true, email: true, password: true },
-    where: { email: payload.email },
-  });
-
-  if (!user) throw new AuthorizationException();
+  const user = await getUserAuth(payload.email);
 
   const { id, password, ...other } = user;
   const passVerify = await verifyPassword(
@@ -39,5 +34,5 @@ export const handleLogin = async (payload: LoginSchema) => {
 
 export const handleRegister = async (payload: RegisterSchema) => {
   payload.password = await hashPassword(payload.password);
-  return prisma.user.create({ data: payload });
+  return createUserAuth(payload); 
 };
